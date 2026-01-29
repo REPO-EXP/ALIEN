@@ -1,449 +1,384 @@
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "01/29/2026 14:43:46 - INFO - __main__ - Distributed environment: NO\n",
-      "Num processes: 1\n",
-      "Process index: 0\n",
-      "Local process index: 0\n",
-      "Device: cuda\n",
-      "\n",
-      "Mixed precision type: no\n",
-      "\n",
-      "01/29/2026 14:43:46 - INFO - __main__ - Using device: cuda\n",
-      "/root/miniconda3/envs/wm_bench/lib/python3.10/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.\n",
-      "  warnings.warn(\n",
-      "/root/miniconda3/envs/wm_bench/lib/python3.10/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=AlexNet_Weights.IMAGENET1K_V1`. You can also use `weights=AlexNet_Weights.DEFAULT` to get the most up-to-date weights.\n",
-      "  warnings.warn(msg)\n"
-     ]
-    },
-    {
-     "ename": "FileNotFoundError",
-     "evalue": "[Errno 2] No such file or directory: './generated_dataset_v1_5/metadata_generated.jsonl'",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
-      "\u001b[0;31mFileNotFoundError\u001b[0m                         Traceback (most recent call last)",
-      "Cell \u001b[0;32mIn[1], line 94\u001b[0m\n\u001b[1;32m     91\u001b[0m lpips_alex\u001b[38;5;241m.\u001b[39mrequires_grad_(\u001b[38;5;28;01mFalse\u001b[39;00m)\n\u001b[1;32m     92\u001b[0m lpips_alex\u001b[38;5;241m.\u001b[39meval()\n\u001b[0;32m---> 94\u001b[0m train_dataset \u001b[38;5;241m=\u001b[39m \u001b[43mImageData\u001b[49m\u001b[43m(\u001b[49m\u001b[43margs\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mtrain_path\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43msecret_size\u001b[49m\u001b[38;5;241;43m=\u001b[39;49m\u001b[43margs\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43msecret_size\u001b[49m\u001b[43m)\u001b[49m\n\u001b[1;32m     95\u001b[0m train_dataloader \u001b[38;5;241m=\u001b[39m torch\u001b[38;5;241m.\u001b[39mutils\u001b[38;5;241m.\u001b[39mdata\u001b[38;5;241m.\u001b[39mDataLoader(\n\u001b[1;32m     96\u001b[0m     train_dataset, batch_size\u001b[38;5;241m=\u001b[39margs\u001b[38;5;241m.\u001b[39mbatch_size, shuffle\u001b[38;5;241m=\u001b[39m\u001b[38;5;28;01mTrue\u001b[39;00m, pin_memory\u001b[38;5;241m=\u001b[39m\u001b[38;5;28;01mTrue\u001b[39;00m)\n\u001b[1;32m     98\u001b[0m validation_dataset \u001b[38;5;241m=\u001b[39m ImageData(args\u001b[38;5;241m.\u001b[39mvalidation_path, secret_size\u001b[38;5;241m=\u001b[39margs\u001b[38;5;241m.\u001b[39msecret_size, \n\u001b[1;32m     99\u001b[0m                               num_samples\u001b[38;5;241m=\u001b[39margs\u001b[38;5;241m.\u001b[39mmax_val_samples, split\u001b[38;5;241m=\u001b[39m\u001b[38;5;124m'\u001b[39m\u001b[38;5;124mtest\u001b[39m\u001b[38;5;124m'\u001b[39m)\n",
-      "File \u001b[0;32m~/watermark/ALIEN/dataset.py:18\u001b[0m, in \u001b[0;36mImageData.__init__\u001b[0;34m(self, data_path, secret_size, num_samples, split)\u001b[0m\n\u001b[1;32m     15\u001b[0m metadata_file \u001b[38;5;241m=\u001b[39m os\u001b[38;5;241m.\u001b[39mpath\u001b[38;5;241m.\u001b[39mjoin(data_path, \u001b[38;5;124m'\u001b[39m\u001b[38;5;124mmetadata_generated.jsonl\u001b[39m\u001b[38;5;124m'\u001b[39m)\n\u001b[1;32m     16\u001b[0m \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39msamples \u001b[38;5;241m=\u001b[39m []\n\u001b[0;32m---> 18\u001b[0m \u001b[38;5;28;01mwith\u001b[39;00m \u001b[38;5;28;43mopen\u001b[39;49m\u001b[43m(\u001b[49m\u001b[43mmetadata_file\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[38;5;124;43m'\u001b[39;49m\u001b[38;5;124;43mr\u001b[39;49m\u001b[38;5;124;43m'\u001b[39;49m\u001b[43m)\u001b[49m \u001b[38;5;28;01mas\u001b[39;00m f:\n\u001b[1;32m     19\u001b[0m     \u001b[38;5;28;01mfor\u001b[39;00m line \u001b[38;5;129;01min\u001b[39;00m f:\n\u001b[1;32m     20\u001b[0m         \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39msamples\u001b[38;5;241m.\u001b[39mappend(json\u001b[38;5;241m.\u001b[39mloads(line\u001b[38;5;241m.\u001b[39mstrip()))\n",
-      "\u001b[0;31mFileNotFoundError\u001b[0m: [Errno 2] No such file or directory: './generated_dataset_v1_5/metadata_generated.jsonl'"
-     ]
-    }
-   ],
-   "source": [
-    "import os\n",
-    "import model\n",
-    "from dataset import ImageData\n",
-    "import torch\n",
-    "import argparse\n",
-    "import lpips\n",
-    "from transformers import get_linear_schedule_with_warmup\n",
-    "from diffusers import AutoencoderKL\n",
-    "from accelerate import Accelerator\n",
-    "from accelerate.utils import ProjectConfiguration, set_seed\n",
-    "from accelerate.logging import get_logger\n",
-    "import logging\n",
-    "from pathlib import Path\n",
-    "import json\n",
-    "from itertools import chain \n",
-    "from tqdm.auto import tqdm\n",
-    "import warnings\n",
-    "from torchvision.utils import save_image\n",
-    "import io\n",
-    "from PIL import Image\n",
-    "import torchvision.transforms as T\n",
-    "import torchvision.transforms.functional as F\n",
-    "import kornia.augmentation as K\n",
-    "from utils import *\n",
-    "\n",
-    "logger = get_logger(__name__)\n",
-    "\n",
-    "parser = argparse.ArgumentParser()\n",
-    "parser.add_argument('--train_path', type=str, default='./generated_dataset_v1_5', help=\"Path to the training dataset directory\")\n",
-    "parser.add_argument('--validation_path', type=str, default=None, help=\"Path to the validation dataset directory\")\n",
-    "parser.add_argument('--output_dir', type=str, default='output_dir')\n",
-    "parser.add_argument('--num_steps', type=int, default=300000)\n",
-    "parser.add_argument('--warm_up_steps', type=int, default=0)\n",
-    "parser.add_argument('--batch_size', type=int, default=1)\n",
-    "parser.add_argument('--lr', type=float, default=1e-6)\n",
-    "parser.add_argument('--image_loss_scale', type=int, default=30)\n",
-    "parser.add_argument('--image_loss_ramp', type=int, default=5000)\n",
-    "parser.add_argument('--secret_loss_scale', type=float, default=1)\n",
-    "parser.add_argument('--seed', type=int, default=0)\n",
-    "parser.add_argument(\"--pretrained_dir\", type=str, default='output_dir/saved_models/step419000', help=\"Path to the pretrained model directory\")\n",
-    "parser.add_argument(\"--start_step\", type=int, default=419000)\n",
-    "parser.add_argument('--validation_batch_size', type=int, default=1)\n",
-    "parser.add_argument('--max_val_samples', type=int, default=1)\n",
-    "parser.add_argument('--recordImg_freq', type=int, default=1000)\n",
-    "parser.add_argument('--validation_freq', type=int, default=1000)\n",
-    "parser.add_argument('--secret_size', type=int, default=48)\n",
-    "parser.add_argument('--sd_model', type=str, default=\"../stable-diffusion-v1-5\")\n",
-    "parser.add_argument('--save_freq', type=int, default=8000)\n",
-    "parser.add_argument('--lpips_scale', type=float, default=0.3)\n",
-    "parser.add_argument('--lpips_ramp', type=int, default=5000)\n",
-    "parser.add_argument(\"--max_grad_norm\", default=1e-2, type=float, help=\"Max gradient norm.\")\n",
-    "parser.add_argument(\"--adam_weight_decay\", type=float, default=0.00001, help=\"Weight decay to use.\")\n",
-    "parser.add_argument('--device', type=str, default='cuda', help=\"Device\")\n",
-    "\n",
-    "args = parser.parse_known_args()[0]\n",
-    "\n",
-    "CHECKPOINT_SAVE_FREQ = 1000\n",
-    "\n",
-    "checkpoints_path = f\"{args.output_dir}/checkpoints\"\n",
-    "saved_models_path = f\"{args.output_dir}/saved_models\"\n",
-    "image_save_path = f\"{args.output_dir}/validation_images\"\n",
-    "\n",
-    "os.makedirs(checkpoints_path, exist_ok=True)\n",
-    "os.makedirs(saved_models_path, exist_ok=True)\n",
-    "os.makedirs(image_save_path, exist_ok=True)\n",
-    "\n",
-    "logging_dir = Path(args.output_dir, \"logs\")\n",
-    "accelerator_project_config = ProjectConfiguration(project_dir=args.output_dir, logging_dir=logging_dir)\n",
-    "accelerator = Accelerator(\n",
-    "    gradient_accumulation_steps=1,\n",
-    "    project_config=accelerator_project_config,\n",
-    "    device_placement=True,\n",
-    ")\n",
-    "\n",
-    "logging.basicConfig(\n",
-    "    format=\"%(asctime)s - %(levelname)s - %(name)s - %(message)s\",\n",
-    "    datefmt=\"%m/%d/%Y %H:%M:%S\",\n",
-    "    level=logging.INFO)\n",
-    "logger.info(accelerator.state, main_process_only=False)\n",
-    "\n",
-    "if args.seed is not None:\n",
-    "    set_seed(args.seed)\n",
-    "\n",
-    "device = accelerator.device\n",
-    "logger.info(f\"Using device: {device}\")\n",
-    "\n",
-    "log_file = open(f\"{args.output_dir}/training_log.txt\", \"w\")\n",
-    "log_file.write(f\"Using device: {device}\\n\")\n",
-    "\n",
-    "lpips_alex = lpips.LPIPS(net=\"alex\", verbose=False).to(device)\n",
-    "lpips_alex.requires_grad_(False)\n",
-    "lpips_alex.eval()\n",
-    "\n",
-    "train_dataset = ImageData(args.train_path, secret_size=args.secret_size)\n",
-    "train_dataloader = torch.utils.data.DataLoader(\n",
-    "    train_dataset, batch_size=args.batch_size, shuffle=True, pin_memory=True)\n",
-    "\n",
-    "validation_dataset = ImageData(args.validation_path, secret_size=args.secret_size, \n",
-    "                              num_samples=args.max_val_samples, split='test')\n",
-    "validation_dataloader = torch.utils.data.DataLoader(\n",
-    "    validation_dataset, batch_size=args.validation_batch_size, shuffle=False, pin_memory=True)\n",
-    "\n",
-    "sec_encoder = model.LatentMarkEncoder(\n",
-    "    secret_size=args.secret_size, \n",
-    "    latent_channels=4, \n",
-    "    resolution=64\n",
-    ")\n",
-    "decoder = model.LatentMarkDecoder(\n",
-    "    latent_channels=4, \n",
-    "    secret_size=args.secret_size\n",
-    ")\n",
-    "\n",
-    "if args.pretrained_dir:\n",
-    "    decoder.load_state_dict(torch.load(os.path.join(args.pretrained_dir, \"decoder.pth\"), map_location='cpu'))\n",
-    "    sec_encoder.load_state_dict(torch.load(os.path.join(args.pretrained_dir, \"encoder.pth\"), map_location='cpu'))\n",
-    "    logger.info(f\"Loaded pretrained models from {args.pretrained_dir}\")\n",
-    "\n",
-    "sec_encoder = sec_encoder.to(device)\n",
-    "decoder = decoder.to(device)\n",
-    "\n",
-    "encoder_params = count_parameters(sec_encoder)\n",
-    "decoder_params = count_parameters(decoder)\n",
-    "total_params = encoder_params + decoder_params\n",
-    "\n",
-    "if accelerator.is_main_process:\n",
-    "    param_info = f\"Trainable parameters:\\n\" \\\n",
-    "                 f\"  Encoder: {encoder_params} ({format_numel(encoder_params)})\\n\" \\\n",
-    "                 f\"  Decoder: {decoder_params} ({format_numel(decoder_params)})\\n\" \\\n",
-    "                 f\"  Total: {total_params} ({format_numel(total_params)})\"\n",
-    "    \n",
-    "    logger.info(param_info)\n",
-    "    log_file.write(f\"\\n{param_info}\\n\")\n",
-    "    log_file.flush()\n",
-    "\n",
-    "generator_params = chain(sec_encoder.parameters(), decoder.parameters())\n",
-    "optimizer = torch.optim.AdamW(\n",
-    "    generator_params,\n",
-    "    lr=args.lr,\n",
-    "    weight_decay=args.adam_weight_decay,\n",
-    ")\n",
-    "\n",
-    "lr_scheduler = get_linear_schedule_with_warmup(\n",
-    "    optimizer, num_warmup_steps=args.warm_up_steps, num_training_steps=args.num_steps)\n",
-    "\n",
-    "models_to_prepare = [sec_encoder, decoder, optimizer, train_dataloader, validation_dataloader, lr_scheduler]\n",
-    "\n",
-    "prepared_objects = accelerator.prepare(*models_to_prepare)\n",
-    "\n",
-    "sec_encoder = prepared_objects[0]\n",
-    "decoder = prepared_objects[1]\n",
-    "optimizer = prepared_objects[2]\n",
-    "train_dataloader = prepared_objects[3]\n",
-    "validation_dataloader = prepared_objects[4]\n",
-    "lr_scheduler = prepared_objects[5]\n",
-    "\n",
-    "global_step = args.start_step\n",
-    "min_loss = 10000\n",
-    "\n",
-    "vae = AutoencoderKL.from_pretrained(args.sd_model, subfolder=\"vae\")\n",
-    "vae = vae.to(device)\n",
-    "vae.requires_grad_(False)\n",
-    "vae.eval()\n",
-    "\n",
-    "total_steps = args.num_steps\n",
-    "progress_bar = tqdm(\n",
-    "    range(global_step, total_steps),\n",
-    "    initial=global_step,\n",
-    "    desc=\"Training Steps\",\n",
-    "    disable=not accelerator.is_main_process,\n",
-    ")\n",
-    "\n",
-    "training_stats = {\n",
-    "    'total_loss': 0.0,\n",
-    "    'secret_loss': 0.0,\n",
-    "    'image_loss': 0.0,\n",
-    "    'lpips_loss': 0.0,\n",
-    "}\n",
-    "\n",
-    "iterator = iter(train_dataloader)\n",
-    "while global_step < total_steps:\n",
-    "    sec_encoder.train()\n",
-    "    decoder.train()\n",
-    "    \n",
-    "    try:\n",
-    "        image_input, secret_input = next(iterator)\n",
-    "    except StopIteration:\n",
-    "        iterator = iter(train_dataloader)\n",
-    "        image_input, secret_input = next(iterator)\n",
-    "    \n",
-    "    image_input = image_input.to(device)\n",
-    "    secret_input = secret_input.to(device)\n",
-    "    \n",
-    "    if global_step < 20:\n",
-    "        image_input = torch.zeros_like(image_input)\n",
-    "        if accelerator.is_main_process and global_step == 0:\n",
-    "            logger.info(f\"Starting training with pure gray background for the first 20 steps\")\n",
-    "    \n",
-    "    image_loss_scale = min(args.image_loss_scale * global_step / args.image_loss_ramp, args.image_loss_scale)\n",
-    "    lpips_scale = min(args.lpips_scale * global_step / args.lpips_ramp, args.lpips_scale)\n",
-    "    loss_scales = (args.secret_loss_scale, image_loss_scale, lpips_scale)\n",
-    "\n",
-    "    loss_details = model.build_latentmark_model(\n",
-    "        secret_input, sec_encoder, decoder, image_input, loss_scales, args, \n",
-    "        global_step, vae, lpips_alex, accelerator, \n",
-    "        critic=None, adversary=None, use_gan=False\n",
-    "    )\n",
-    "    \n",
-    "    total_loss = loss_details['total_loss']\n",
-    "    secret_loss = loss_details['secret_loss']\n",
-    "    \n",
-    "    optimizer.zero_grad()\n",
-    "    accelerator.backward(total_loss)\n",
-    "    accelerator.clip_grad_norm_(generator_params, args.max_grad_norm)\n",
-    "    optimizer.step()\n",
-    "    lr_scheduler.step()\n",
-    "    \n",
-    "    training_stats['total_loss'] = total_loss.item()\n",
-    "    training_stats['secret_loss'] = secret_loss.item()\n",
-    "    training_stats['image_loss'] = loss_details['image_loss'].item()\n",
-    "    training_stats['lpips_loss'] = loss_details['lpips_loss'].item()\n",
-    "    \n",
-    "    if accelerator.is_main_process:\n",
-    "        postfix_dict = {\n",
-    "            'loss': f\"{training_stats['total_loss']:.4f}\", \n",
-    "            's_loss': f\"{training_stats['secret_loss']:.4f}\",\n",
-    "            'img_loss': f\"{training_stats['image_loss']:.4f}\",\n",
-    "            'lpips': f\"{training_stats['lpips_loss']:.4f}\",\n",
-    "            'lr': f\"{optimizer.param_groups[0]['lr']:.2e}\"\n",
-    "        }\n",
-    "        \n",
-    "        progress_bar.set_postfix(**postfix_dict)\n",
-    "        progress_bar.update(1)\n",
-    "    \n",
-    "    if global_step % args.validation_freq == 0:\n",
-    "        decoder.eval()\n",
-    "        sec_encoder.eval()\n",
-    "        \n",
-    "        psnr_input_ls = []\n",
-    "        psnr_recons_ls = []\n",
-    "        ssim_recons_ls = [] \n",
-    "        acc_WM_ls = []\n",
-    "        blur_wm_acc = []\n",
-    "        noise_wm_acc = []\n",
-    "        jpeg_compress_wm_acc = []\n",
-    "        resize_wm_acc = []\n",
-    "        sharpness_wm_acc = []\n",
-    "        brightness_wm_acc = []\n",
-    "        contrast_wm_acc = []\n",
-    "        saturation_wm_acc = []\n",
-    "        \n",
-    "        distortion_list = ['identity', 'blur', 'noise', 'jpeg_compress', 'resize', \n",
-    "                          'sharpness', \"brightness\", \"contrast\", \"saturation\"]\n",
-    "        \n",
-    "        should_record_img = (global_step % args.recordImg_freq == 0) and accelerator.is_main_process\n",
-    "        \n",
-    "        with torch.no_grad():\n",
-    "            for i, batch in enumerate(validation_dataloader):\n",
-    "                image_input, secret_input = batch\n",
-    "                image_input = image_input.to(device)\n",
-    "                secret_input = secret_input.to(device)\n",
-    "                \n",
-    "                if should_record_img:\n",
-    "                    latent = vae.encode(image_input).latent_dist.sample()\n",
-    "                    latent = latent * vae.config.scaling_factor\n",
-    "                    residual = sec_encoder(secret_input)\n",
-    "                    encoded_latent = latent + residual\n",
-    "                    decoded_image = vae_decode(encoded_latent, vae)\n",
-    "                    \n",
-    "                    for j in range(min(2, image_input.shape[0])):\n",
-    "                        save_image(vae_preprocess(image_input[j]), \n",
-    "                                   f\"{image_save_path}/step{global_step}_batch{i}_sample{j}_0_original.png\")\n",
-    "                        save_image(vae_preprocess(decoded_image[j]), \n",
-    "                                   f\"{image_save_path}/step{global_step}_batch{i}_sample{j}_1_watermarked.png\")\n",
-    "                        \n",
-    "                        image_residual = decoded_image[j] - image_input[j]\n",
-    "                        residual_magnitude = torch.abs(image_residual).mean(dim=0, keepdim=True)\n",
-    "                        \n",
-    "                        residual_max = residual_magnitude.max()\n",
-    "                        residual_min = residual_magnitude.min()\n",
-    "                        \n",
-    "                        if residual_max > residual_min:\n",
-    "                            residual_norm = (residual_magnitude - residual_min) / (residual_max - residual_min)\n",
-    "                        else:\n",
-    "                            residual_norm = torch.zeros_like(residual_magnitude)\n",
-    "                        save_image(residual_norm, \n",
-    "                                   f\"{image_save_path}/step{global_step}_batch{i}_sample{j}_2_residual_map.png\")\n",
-    "                \n",
-    "                for distortion in distortion_list:\n",
-    "                    avg_psnr_recons, avg_ssim_recons, predict_acc_WM = model.validate_latentmark_model(\n",
-    "                        secret_input, sec_encoder, decoder, image_input, vae, distortion, \n",
-    "                        distortion_unit=distortion_unit\n",
-    "                        )\n",
-    "                    \n",
-    "                    if distortion == 'identity':\n",
-    "                        acc_WM_ls.append(predict_acc_WM)\n",
-    "                        ssim_recons_ls.append(avg_ssim_recons.mean().item())\n",
-    "                        psnr_recons_ls.append(avg_psnr_recons.mean().item())\n",
-    "                    elif distortion == 'resize':\n",
-    "                        resize_wm_acc.append(predict_acc_WM)\n",
-    "                    elif distortion == 'brightness':\n",
-    "                        brightness_wm_acc.append(predict_acc_WM)\n",
-    "                    elif distortion == 'contrast':\n",
-    "                        contrast_wm_acc.append(predict_acc_WM)\n",
-    "                    elif distortion == 'saturation':\n",
-    "                        saturation_wm_acc.append(predict_acc_WM)\n",
-    "                    elif distortion == 'blur':\n",
-    "                        blur_wm_acc.append(predict_acc_WM)\n",
-    "                    elif distortion == 'noise':\n",
-    "                        noise_wm_acc.append(predict_acc_WM)\n",
-    "                    elif distortion == 'jpeg_compress':\n",
-    "                        jpeg_compress_wm_acc.append(predict_acc_WM)\n",
-    "                    elif distortion == 'sharpness':\n",
-    "                        sharpness_wm_acc.append(predict_acc_WM)\n",
-    "                    else:\n",
-    "                        if accelerator.is_main_process:\n",
-    "                            logger.warning(f\"Error: distortion {distortion} not found\")\n",
-    "                \n",
-    "                psnr_recons_ls.append(avg_psnr_recons)\n",
-    "        \n",
-    "        accelerator.wait_for_everyone()\n",
-    "        \n",
-    "        avg_acc_WM = torch.tensor(acc_WM_ls).mean()\n",
-    "        avg_psnr_recons = torch.tensor(psnr_recons_ls).mean()\n",
-    "        avg_ssim_recons = torch.tensor(ssim_recons_ls).mean()  \n",
-    "        avg_acc_resize = torch.tensor(resize_wm_acc).mean()\n",
-    "        avg_acc_bright = torch.tensor(brightness_wm_acc).mean()\n",
-    "        avg_acc_contrast = torch.tensor(contrast_wm_acc).mean()\n",
-    "        avg_acc_saturation = torch.tensor(saturation_wm_acc).mean()\n",
-    "        avg_acc_blur = torch.tensor(blur_wm_acc).mean()\n",
-    "        avg_acc_noise = torch.tensor(noise_wm_acc).mean()\n",
-    "        avg_acc_jpeg_compress = torch.tensor(jpeg_compress_wm_acc).mean()\n",
-    "        avg_acc_sharpness = torch.tensor(sharpness_wm_acc).mean()\n",
-    "        \n",
-    "        if accelerator.is_main_process:\n",
-    "            log_file.write(f\"Step {global_step}:\\n\")\n",
-    "            log_file.write(f\"  Total Loss: {training_stats['total_loss']:.4f}\\n\")\n",
-    "            log_file.write(f\"  Secret Loss: {training_stats['secret_loss']:.4f}\\n\")\n",
-    "            log_file.write(f\"  Image Loss: {training_stats['image_loss']:.4f}\\n\")\n",
-    "            log_file.write(f\"  LPIPS Loss: {training_stats['lpips_loss']:.4f}\\n\")\n",
-    "            log_file.write(f\"  PSNR Recons: {avg_psnr_recons.item():.4f}\\n\")\n",
-    "            log_file.write(f\"  SSIM Recons: {avg_ssim_recons.item():.4f}\\n\")  \n",
-    "            log_file.write(f\"  WM Accuracy - No Distortion: {avg_acc_WM.item():.4f}\\n\")\n",
-    "            log_file.write(f\"  WM Accuracy - Resize: {avg_acc_resize.item():.4f}\\n\")\n",
-    "            log_file.write(f\"  WM Accuracy - Brightness: {avg_acc_bright.item():.4f}\\n\")\n",
-    "            log_file.write(f\"  WM Accuracy - Contrast: {avg_acc_contrast.item():.4f}\\n\")\n",
-    "            log_file.write(f\"  WM Accuracy - Saturation: {avg_acc_saturation.item():.4f}\\n\")\n",
-    "            log_file.write(f\"  WM Accuracy - Blur: {avg_acc_blur.item():.4f}\\n\")\n",
-    "            log_file.write(f\"  WM Accuracy - Noise: {avg_acc_noise.item():.4f}\\n\")\n",
-    "            log_file.write(f\"  WM Accuracy - JPEG: {avg_acc_jpeg_compress.item():.4f}\\n\")\n",
-    "            log_file.write(f\"  WM Accuracy - Sharpness: {avg_acc_sharpness.item():.4f}\\n\")\n",
-    "            \n",
-    "            log_file.flush()\n",
-    "            \n",
-    "            logger.info(f\"Step {global_step}: Total Loss={training_stats['total_loss']:.4f}, \"\n",
-    "                       f\"Secret Loss={training_stats['secret_loss']:.4f}, \"\n",
-    "                       f\"Image Loss={training_stats['image_loss']:.4f}, \"\n",
-    "                       f\"LPIPS={training_stats['lpips_loss']:.4f}, \"\n",
-    "                       f\"PSNR={avg_psnr_recons.item():.4f}, \"\n",
-    "                       f\"SSIM={avg_ssim_recons.item():.4f}\")\n",
-    "    \n",
-    "    if accelerator.is_main_process:\n",
-    "        if global_step % CHECKPOINT_SAVE_FREQ == 0:\n",
-    "            save_dir = os.path.join(saved_models_path, f\"step{global_step}\")\n",
-    "            os.makedirs(save_dir, exist_ok=True)\n",
-    "            torch.save(accelerator.unwrap_model(sec_encoder).state_dict(), f\"{save_dir}/encoder.pth\")\n",
-    "            torch.save(accelerator.unwrap_model(decoder).state_dict(), f\"{save_dir}/decoder.pth\")\n",
-    "            logger.info(f\"Model saved to {save_dir}\")\n",
-    "        \n",
-    "        if global_step > args.lpips_ramp and training_stats['total_loss'] < min_loss:\n",
-    "            min_loss = training_stats['total_loss']\n",
-    "            torch.save(accelerator.unwrap_model(sec_encoder).state_dict(), \n",
-    "                       os.path.join(checkpoints_path, \"encoder_best_total_loss.pth\"))\n",
-    "            torch.save(accelerator.unwrap_model(decoder).state_dict(), \n",
-    "                       os.path.join(checkpoints_path, \"decoder_best_total_loss.pth\"))\n",
-    "            logger.info(f\"Best model saved with loss: {min_loss:.4f}\")\n",
-    "    \n",
-    "    global_step += 1\n",
-    "\n",
-    "log_file.close()\n",
-    "progress_bar.close()\n",
-    "accelerator.wait_for_everyone()\n",
-    "accelerator.end_training()\n",
-    "\n",
-    "logger.info(\"Training completed successfully!\")"
-   ]
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "wm_bench",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.10.19"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 2
+import os
+import model
+from dataset import ImageData
+import torch
+import argparse
+import lpips
+from transformers import get_linear_schedule_with_warmup
+from diffusers import AutoencoderKL
+from accelerate import Accelerator
+from accelerate.utils import ProjectConfiguration, set_seed
+from accelerate.logging import get_logger
+import logging
+from pathlib import Path
+import json
+from itertools import chain 
+from tqdm.auto import tqdm
+import warnings
+from torchvision.utils import save_image
+import io
+from PIL import Image
+import torchvision.transforms as T
+import torchvision.transforms.functional as F
+import kornia.augmentation as K
+from utils import *
+
+logger = get_logger(__name__)
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--train_path', type=str, default='./generated_dataset_v1_5', help="Path to the training dataset directory")
+parser.add_argument('--validation_path', type=str, default='./generated_dataset_v1_5', help="Path to the validation dataset directory")
+parser.add_argument('--output_dir', type=str, default='output_dir')
+parser.add_argument('--num_steps', type=int, default=3000000)
+parser.add_argument('--warm_up_steps', type=int, default=0)
+parser.add_argument('--batch_size', type=int, default=1)
+parser.add_argument('--lr', type=float, default=1e-6)
+parser.add_argument('--image_loss_scale', type=int, default=30)
+parser.add_argument('--image_loss_ramp', type=int, default=5000)
+parser.add_argument('--secret_loss_scale', type=float, default=1)
+parser.add_argument('--seed', type=int, default=0)
+parser.add_argument("--pretrained_dir", type=str, default='ALIEN_Models/', help="Path to the pretrained model directory")
+parser.add_argument("--start_step", type=int, default=419000)
+parser.add_argument('--validation_batch_size', type=int, default=1)
+parser.add_argument('--max_val_samples', type=int, default=1)
+parser.add_argument('--recordImg_freq', type=int, default=1000)
+parser.add_argument('--validation_freq', type=int, default=1000)
+parser.add_argument('--secret_size', type=int, default=48)
+parser.add_argument('--sd_model', type=str, default="../stable-diffusion-v1-5")
+parser.add_argument('--save_freq', type=int, default=8000)
+parser.add_argument('--lpips_scale', type=float, default=0.3)
+parser.add_argument('--lpips_ramp', type=int, default=5000)
+parser.add_argument("--max_grad_norm", default=1e-2, type=float, help="Max gradient norm.")
+parser.add_argument("--adam_weight_decay", type=float, default=0.00001, help="Weight decay to use.")
+parser.add_argument('--device', type=str, default='cuda', help="Device")
+
+args = parser.parse_known_args()[0]
+
+CHECKPOINT_SAVE_FREQ = 1000
+
+checkpoints_path = f"{args.output_dir}/checkpoints"
+saved_models_path = f"{args.output_dir}/saved_models"
+image_save_path = f"{args.output_dir}/validation_images"
+
+os.makedirs(checkpoints_path, exist_ok=True)
+os.makedirs(saved_models_path, exist_ok=True)
+os.makedirs(image_save_path, exist_ok=True)
+
+logging_dir = Path(args.output_dir, "logs")
+accelerator_project_config = ProjectConfiguration(project_dir=args.output_dir, logging_dir=logging_dir)
+accelerator = Accelerator(
+    gradient_accumulation_steps=1,
+    project_config=accelerator_project_config,
+    device_placement=True,
+)
+
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    datefmt="%m/%d/%Y %H:%M:%S",
+    level=logging.INFO)
+logger.info(accelerator.state, main_process_only=False)
+
+if args.seed is not None:
+    set_seed(args.seed)
+
+device = accelerator.device
+logger.info(f"Using device: {device}")
+
+log_file = open(f"{args.output_dir}/training_log.txt", "w")
+log_file.write(f"Using device: {device}\n")
+
+lpips_alex = lpips.LPIPS(net="alex", verbose=False).to(device)
+lpips_alex.requires_grad_(False)
+lpips_alex.eval()
+
+train_dataset = ImageData(args.train_path, secret_size=args.secret_size)
+train_dataloader = torch.utils.data.DataLoader(
+    train_dataset, batch_size=args.batch_size, shuffle=True, pin_memory=True)
+
+validation_dataset = ImageData(args.validation_path, secret_size=args.secret_size, 
+                              num_samples=args.max_val_samples, split='test')
+validation_dataloader = torch.utils.data.DataLoader(
+    validation_dataset, batch_size=args.validation_batch_size, shuffle=False, pin_memory=True)
+
+sec_encoder = model.LatentMarkEncoder(
+    secret_size=args.secret_size, 
+    latent_channels=4, 
+    resolution=64
+)
+decoder = model.LatentMarkDecoder(
+    latent_channels=4, 
+    secret_size=args.secret_size
+)
+
+if args.pretrained_dir:
+    decoder.load_state_dict(torch.load(os.path.join(args.pretrained_dir, "decoder.pth"), map_location='cpu'))
+    sec_encoder.load_state_dict(torch.load(os.path.join(args.pretrained_dir, "encoder.pth"), map_location='cpu'))
+    logger.info(f"Loaded pretrained models from {args.pretrained_dir}")
+
+sec_encoder = sec_encoder.to(device)
+decoder = decoder.to(device)
+
+encoder_params = count_parameters(sec_encoder)
+decoder_params = count_parameters(decoder)
+total_params = encoder_params + decoder_params
+
+if accelerator.is_main_process:
+    param_info = f"Trainable parameters:\n" \
+                 f"  Encoder: {encoder_params} ({format_numel(encoder_params)})\n" \
+                 f"  Decoder: {decoder_params} ({format_numel(decoder_params)})\n" \
+                 f"  Total: {total_params} ({format_numel(total_params)})"
+    
+    logger.info(param_info)
+    log_file.write(f"\n{param_info}\n")
+    log_file.flush()
+
+generator_params = chain(sec_encoder.parameters(), decoder.parameters())
+optimizer = torch.optim.AdamW(
+    generator_params,
+    lr=args.lr,
+    weight_decay=args.adam_weight_decay,
+)
+
+lr_scheduler = get_linear_schedule_with_warmup(
+    optimizer, num_warmup_steps=args.warm_up_steps, num_training_steps=args.num_steps)
+
+models_to_prepare = [sec_encoder, decoder, optimizer, train_dataloader, validation_dataloader, lr_scheduler]
+
+prepared_objects = accelerator.prepare(*models_to_prepare)
+
+sec_encoder = prepared_objects[0]
+decoder = prepared_objects[1]
+optimizer = prepared_objects[2]
+train_dataloader = prepared_objects[3]
+validation_dataloader = prepared_objects[4]
+lr_scheduler = prepared_objects[5]
+
+global_step = args.start_step
+min_loss = 10000
+
+vae = AutoencoderKL.from_pretrained(args.sd_model, subfolder="vae")
+vae = vae.to(device)
+vae.requires_grad_(False)
+vae.eval()
+
+total_steps = args.num_steps
+progress_bar = tqdm(
+    range(global_step, total_steps),
+    initial=global_step,
+    desc="Training Steps",
+    disable=not accelerator.is_main_process,
+)
+
+training_stats = {
+    'total_loss': 0.0,
+    'secret_loss': 0.0,
+    'image_loss': 0.0,
+    'lpips_loss': 0.0,
 }
+
+iterator = iter(train_dataloader)
+while global_step < total_steps:
+    sec_encoder.train()
+    decoder.train()
+    
+    try:
+        image_input, secret_input = next(iterator)
+    except StopIteration:
+        iterator = iter(train_dataloader)
+        image_input, secret_input = next(iterator)
+    
+    image_input = image_input.to(device)
+    secret_input = secret_input.to(device)
+    
+    if global_step < 20:
+        image_input = torch.zeros_like(image_input)
+        if accelerator.is_main_process and global_step == 0:
+            logger.info(f"Starting training with pure gray background for the first 20 steps")
+    
+    image_loss_scale = min(args.image_loss_scale * global_step / args.image_loss_ramp, args.image_loss_scale)
+    lpips_scale = min(args.lpips_scale * global_step / args.lpips_ramp, args.lpips_scale)
+    loss_scales = (args.secret_loss_scale, image_loss_scale, lpips_scale)
+
+    loss_details = model.build_latentmark_model(
+        secret_input, sec_encoder, decoder, image_input, loss_scales, args, 
+        global_step, vae, lpips_alex, accelerator, 
+        critic=None, adversary=None, use_gan=False
+    )
+    
+    total_loss = loss_details['total_loss']
+    secret_loss = loss_details['secret_loss']
+    
+    optimizer.zero_grad()
+    accelerator.backward(total_loss)
+    accelerator.clip_grad_norm_(generator_params, args.max_grad_norm)
+    optimizer.step()
+    lr_scheduler.step()
+    
+    training_stats['total_loss'] = total_loss.item()
+    training_stats['secret_loss'] = secret_loss.item()
+    training_stats['image_loss'] = loss_details['image_loss'].item()
+    training_stats['lpips_loss'] = loss_details['lpips_loss'].item()
+    
+    if accelerator.is_main_process:
+        postfix_dict = {
+            'loss': f"{training_stats['total_loss']:.4f}", 
+            's_loss': f"{training_stats['secret_loss']:.4f}",
+            'img_loss': f"{training_stats['image_loss']:.4f}",
+            'lpips': f"{training_stats['lpips_loss']:.4f}",
+            'lr': f"{optimizer.param_groups[0]['lr']:.2e}"
+        }
+        
+        progress_bar.set_postfix(**postfix_dict)
+        progress_bar.update(1)
+    
+    if global_step % args.validation_freq == 0:
+        decoder.eval()
+        sec_encoder.eval()
+        
+        psnr_input_ls = []
+        psnr_recons_ls = []
+        ssim_recons_ls = [] 
+        acc_WM_ls = []
+        blur_wm_acc = []
+        noise_wm_acc = []
+        jpeg_compress_wm_acc = []
+        resize_wm_acc = []
+        sharpness_wm_acc = []
+        brightness_wm_acc = []
+        contrast_wm_acc = []
+        saturation_wm_acc = []
+        
+        distortion_list = ['identity', 'blur', 'noise', 'jpeg_compress', 'resize', 
+                          'sharpness', "brightness", "contrast", "saturation"]
+        
+        should_record_img = (global_step % args.recordImg_freq == 0) and accelerator.is_main_process
+        
+        with torch.no_grad():
+            for i, batch in enumerate(validation_dataloader):
+                image_input, secret_input = batch
+                image_input = image_input.to(device)
+                secret_input = secret_input.to(device)
+                
+                if should_record_img:
+                    latent = vae.encode(image_input).latent_dist.sample()
+                    latent = latent * vae.config.scaling_factor
+                    residual = sec_encoder(secret_input)
+                    encoded_latent = latent + residual
+                    decoded_image = vae_decode(encoded_latent, vae)
+                    
+                    for j in range(min(2, image_input.shape[0])):
+                        save_image(vae_preprocess(image_input[j]), 
+                                   f"{image_save_path}/step{global_step}_batch{i}_sample{j}_0_original.png")
+                        save_image(vae_preprocess(decoded_image[j]), 
+                                   f"{image_save_path}/step{global_step}_batch{i}_sample{j}_1_watermarked.png")
+                        
+                        image_residual = decoded_image[j] - image_input[j]
+                        residual_magnitude = torch.abs(image_residual).mean(dim=0, keepdim=True)
+                        
+                        residual_max = residual_magnitude.max()
+                        residual_min = residual_magnitude.min()
+                        
+                        if residual_max > residual_min:
+                            residual_norm = (residual_magnitude - residual_min) / (residual_max - residual_min)
+                        else:
+                            residual_norm = torch.zeros_like(residual_magnitude)
+                        save_image(residual_norm, 
+                                   f"{image_save_path}/step{global_step}_batch{i}_sample{j}_2_residual_map.png")
+                
+                for distortion in distortion_list:
+                    avg_psnr_recons, avg_ssim_recons, predict_acc_WM = model.validate_latentmark_model(
+                        secret_input, sec_encoder, decoder, image_input, vae, distortion, 
+                        distortion_unit=distortion_unit
+                        )
+                    
+                    if distortion == 'identity':
+                        acc_WM_ls.append(predict_acc_WM)
+                        ssim_recons_ls.append(avg_ssim_recons.mean().item())
+                        psnr_recons_ls.append(avg_psnr_recons.mean().item())
+                    elif distortion == 'resize':
+                        resize_wm_acc.append(predict_acc_WM)
+                    elif distortion == 'brightness':
+                        brightness_wm_acc.append(predict_acc_WM)
+                    elif distortion == 'contrast':
+                        contrast_wm_acc.append(predict_acc_WM)
+                    elif distortion == 'saturation':
+                        saturation_wm_acc.append(predict_acc_WM)
+                    elif distortion == 'blur':
+                        blur_wm_acc.append(predict_acc_WM)
+                    elif distortion == 'noise':
+                        noise_wm_acc.append(predict_acc_WM)
+                    elif distortion == 'jpeg_compress':
+                        jpeg_compress_wm_acc.append(predict_acc_WM)
+                    elif distortion == 'sharpness':
+                        sharpness_wm_acc.append(predict_acc_WM)
+                    else:
+                        if accelerator.is_main_process:
+                            logger.warning(f"Error: distortion {distortion} not found")
+                
+                psnr_recons_ls.append(avg_psnr_recons)
+        
+        accelerator.wait_for_everyone()
+        
+        avg_acc_WM = torch.tensor(acc_WM_ls).mean()
+        avg_psnr_recons = torch.tensor(psnr_recons_ls).mean()
+        avg_ssim_recons = torch.tensor(ssim_recons_ls).mean()  
+        avg_acc_resize = torch.tensor(resize_wm_acc).mean()
+        avg_acc_bright = torch.tensor(brightness_wm_acc).mean()
+        avg_acc_contrast = torch.tensor(contrast_wm_acc).mean()
+        avg_acc_saturation = torch.tensor(saturation_wm_acc).mean()
+        avg_acc_blur = torch.tensor(blur_wm_acc).mean()
+        avg_acc_noise = torch.tensor(noise_wm_acc).mean()
+        avg_acc_jpeg_compress = torch.tensor(jpeg_compress_wm_acc).mean()
+        avg_acc_sharpness = torch.tensor(sharpness_wm_acc).mean()
+        
+        if accelerator.is_main_process:
+            log_file.write(f"Step {global_step}:\n")
+            log_file.write(f"  Total Loss: {training_stats['total_loss']:.4f}\n")
+            log_file.write(f"  Secret Loss: {training_stats['secret_loss']:.4f}\n")
+            log_file.write(f"  Image Loss: {training_stats['image_loss']:.4f}\n")
+            log_file.write(f"  LPIPS Loss: {training_stats['lpips_loss']:.4f}\n")
+            log_file.write(f"  PSNR Recons: {avg_psnr_recons.item():.4f}\n")
+            log_file.write(f"  SSIM Recons: {avg_ssim_recons.item():.4f}\n")  
+            log_file.write(f"  WM Accuracy - No Distortion: {avg_acc_WM.item():.4f}\n")
+            log_file.write(f"  WM Accuracy - Resize: {avg_acc_resize.item():.4f}\n")
+            log_file.write(f"  WM Accuracy - Brightness: {avg_acc_bright.item():.4f}\n")
+            log_file.write(f"  WM Accuracy - Contrast: {avg_acc_contrast.item():.4f}\n")
+            log_file.write(f"  WM Accuracy - Saturation: {avg_acc_saturation.item():.4f}\n")
+            log_file.write(f"  WM Accuracy - Blur: {avg_acc_blur.item():.4f}\n")
+            log_file.write(f"  WM Accuracy - Noise: {avg_acc_noise.item():.4f}\n")
+            log_file.write(f"  WM Accuracy - JPEG: {avg_acc_jpeg_compress.item():.4f}\n")
+            log_file.write(f"  WM Accuracy - Sharpness: {avg_acc_sharpness.item():.4f}\n")
+            
+            log_file.flush()
+            
+            logger.info(f"Step {global_step}: Total Loss={training_stats['total_loss']:.4f}, "
+                       f"Secret Loss={training_stats['secret_loss']:.4f}, "
+                       f"Image Loss={training_stats['image_loss']:.4f}, "
+                       f"LPIPS={training_stats['lpips_loss']:.4f}, "
+                       f"PSNR={avg_psnr_recons.item():.4f}, "
+                       f"SSIM={avg_ssim_recons.item():.4f}")
+    
+    if accelerator.is_main_process:
+        if global_step % CHECKPOINT_SAVE_FREQ == 0:
+            save_dir = os.path.join(saved_models_path, f"step{global_step}")
+            os.makedirs(save_dir, exist_ok=True)
+            torch.save(accelerator.unwrap_model(sec_encoder).state_dict(), f"{save_dir}/encoder.pth")
+            torch.save(accelerator.unwrap_model(decoder).state_dict(), f"{save_dir}/decoder.pth")
+            logger.info(f"Model saved to {save_dir}")
+        
+        if global_step > args.lpips_ramp and training_stats['total_loss'] < min_loss:
+            min_loss = training_stats['total_loss']
+            torch.save(accelerator.unwrap_model(sec_encoder).state_dict(), 
+                       os.path.join(checkpoints_path, "encoder_best_total_loss.pth"))
+            torch.save(accelerator.unwrap_model(decoder).state_dict(), 
+                       os.path.join(checkpoints_path, "decoder_best_total_loss.pth"))
+            logger.info(f"Best model saved with loss: {min_loss:.4f}")
+    
+    global_step += 1
+
+log_file.close()
+progress_bar.close()
+accelerator.wait_for_everyone()
+accelerator.end_training()
+
+logger.info("Training completed successfully!")
